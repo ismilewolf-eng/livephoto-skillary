@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="seoTitle">LivePhoto · Skillary — Video & GIF to Apple Live Photo Converter</title>
 <meta name="description" id="seoDesc" content="Turn any video or GIF into authentic Apple Live Photos. 100% on-device processing. No cloud uploads. Compatible with iPhone lockscreen wallpapers.">
+<meta name="google-site-verification" content="1b7becf724d6f229">
 <link rel="canonical" href="https://livephoto.skillary.ai/">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -217,25 +218,28 @@
   }
   .pill-cta-secondary:hover { text-decoration: underline; }
   .workspace-section {
-    max-width: 1200px;
-    margin: 20px auto 70px;
+    max-width: 1040px;
+    margin: 10px auto 60px;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-columns: 1.22fr 0.78fr;
     gap: 36px;
-    align-items: start;
+    align-items: center;
     position: relative;
     z-index: 1;
   }
+
   .tool-panel {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
-    border-radius: 28px;
-    padding: 32px;
+    border-radius: 26px;
+    padding: 28px 30px;
     box-shadow: var(--card-shadow);
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 16px;
+    min-height: 500px;
+    justify-content: space-between;
   }
   .panel-header { display: flex; justify-content: space-between; align-items: center; }
   .panel-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
@@ -250,10 +254,11 @@
     padding: 3px 10px;
     border-radius: 980px;
   }
+
   .drop-zone {
     border: 2px dashed #d2d2d7;
-    border-radius: 20px;
-    padding: 36px 20px;
+    border-radius: 18px;
+    padding: 28px 18px;
     text-align: center;
     background: #fafafc;
     cursor: pointer;
@@ -261,12 +266,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
   .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent-blue); background: rgba(0, 113, 227, 0.03); }
   .live-spinner {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 3px solid var(--accent-blue);
     position: relative;
@@ -275,8 +280,8 @@
   }
   .live-spinner::before {
     content: "";
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px dotted var(--accent-blue);
     animation: spinRings 14s linear infinite;
@@ -284,35 +289,61 @@
   .live-spinner::after {
     content: "";
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--accent-blue);
   }
   @keyframes spinRings { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .drop-main-text { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+
+  .drop-main-text { font-size: 15px; font-weight: 600; color: var(--text-primary); }
   .drop-sub-text { font-size: 12px; color: var(--text-secondary); }
+
+  .sample-chips-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .sample-chip {
+    background: #f5f5f7;
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 4px 10px;
+    border-radius: 980px;
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .sample-chip:hover {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+  }
+
   .controls-box {
     display: none;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     background: #f5f5f7;
-    border-radius: 18px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 16px;
   }
   .controls-box.active { display: flex; }
-  .control-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
+  .control-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; }
   .control-val { font-family: "JetBrains Mono", monospace; color: var(--accent-blue); }
-  .scrubber-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .scrubber-wrap { display: flex; flex-direction: column; gap: 6px; }
   .scrubber-slider { width: 100%; accent-color: var(--accent-blue); cursor: pointer; }
-  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .opt-btn {
     background: #ffffff;
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 10px;
-    padding: 8px;
+    border-radius: 8px;
+    padding: 6px;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--text-primary);
     cursor: pointer;
@@ -324,8 +355,8 @@
     color: #ffffff;
     border: none;
     border-radius: 14px;
-    padding: 15px;
-    font-size: 15px;
+    padding: 13px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -337,21 +368,20 @@
   }
   .btn-export-bundle:hover { background: var(--accent-blue-hover); transform: translateY(-1px); }
   .btn-export-bundle:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
   .simulator-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
-    position: sticky;
-    top: 70px;
+    gap: 12px;
   }
   .iphone-future-bezel {
-    width: 310px;
-    height: 630px;
+    width: 250px;
+    height: 500px;
     background: #000000;
-    border-radius: 50px;
+    border-radius: 46px;
     border: 1.5px solid var(--phone-border);
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
     position: relative;
     overflow: hidden;
     padding: 4px;
@@ -359,36 +389,36 @@
     user-select: none;
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
   }
-  .iphone-future-bezel:hover { transform: translateY(-4px); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3); }
+  .iphone-future-bezel:hover { transform: translateY(-3px); box-shadow: 0 25px 70px rgba(0, 0, 0, 0.24); }
   .iphone-future-bezel.pressing { transform: scale(0.985); }
   .dynamic-horizon {
     position: absolute;
-    top: 14px;
+    top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    width: 90px;
-    height: 24px;
+    width: 76px;
+    height: 20px;
     background: #000000;
     border-radius: 980px;
     z-index: 30;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 8px;
+    padding: 0 7px;
   }
-  .cam-dot { width: 8px; height: 8px; border-radius: 50%; background: #111; border: 1px solid #222; }
-  .sensor-dot { width: 6px; height: 6px; border-radius: 50%; background: #050505; }
+  .cam-dot { width: 7px; height: 7px; border-radius: 50%; background: #111; border: 1px solid #222; }
+  .sensor-dot { width: 5px; height: 5px; border-radius: 50%; background: #050505; }
   .phone-screen {
     width: 100%;
     height: 100%;
     background: #000;
-    border-radius: 46px;
+    border-radius: 42px;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 44px 18px 20px;
+    padding: 36px 14px 16px;
   }
   .wallpaper-media {
     position: absolute;
@@ -408,41 +438,59 @@
     pointer-events: none;
   }
   .screen-header { position: relative; z-index: 2; text-align: center; color: #ffffff; }
-  .screen-date { font-size: 13px; font-weight: 500; opacity: 0.9; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
-  .screen-time { font-size: 66px; font-weight: 700; line-height: 0.95; letter-spacing: -2px; margin-top: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+  .screen-date { font-size: 11px; font-weight: 500; opacity: 0.9; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+  .screen-time {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -1.5px;
+    margin-top: 2px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
   .screen-live-tag {
     position: absolute;
-    top: 48px;
-    left: 18px;
+    top: 40px;
+    left: 14px;
     z-index: 3;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: 980px;
     color: #ffffff;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
   }
   .live-indicator-dot { width: 6px; height: 6px; border-radius: 50%; background: #34c759; box-shadow: 0 0 6px #34c759; }
   .screen-footer { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0 8px; }
   .screen-action-circle {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(16px);
     border-radius: 50%;
     display: grid;
     place-items: center;
     color: #fff;
-    font-size: 15px;
+    font-size: 13px;
     border: 1px solid rgba(255,255,255,0.15);
   }
-  .home-bar { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; background: #ffffff; border-radius: 980px; opacity: 0.85; }
-  .press-helper-text { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+  .home-bar {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 3.5px;
+    background: #ffffff;
+    border-radius: 980px;
+    opacity: 0.85;
+  }
+  .press-helper-text { font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 5px; }
+
   .bento-features { max-width: 1200px; margin: 40px auto 80px; padding: 0 24px; }
   .bento-heading { text-align: center; font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 36px; color: var(--text-primary); }
   .bento-layout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -579,9 +627,7 @@
       </div>
     </div>
   </header>
-  <div class="ad-slot-top" id="adTopSlot">
-    <span>[ Google AdSense Responsive Leaderboard ]</span>
-  </div>
+  <div class="ad-slot-top hidden" id="adTopSlot"></div>
   <section class="hero-section">
     <div class="hero-eyebrow">
       <span>●</span> <span id="heroEyebrow">Infinite Display Engine</span>
@@ -913,6 +959,22 @@
     fileInput.addEventListener('change', (e) => {
       if (e.target.files.length) handleFile(e.target.files[0]);
     });
+    
+    const sampleUrls = {
+      waves: 'https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4',
+      cyberpunk: 'https://assets.mixkit.co/videos/preview/mixkit-neon-lights-in-a-cyberpunk-city-43187-large.mp4',
+      breeze: 'https://assets.mixkit.co/videos/preview/mixkit-tree-branches-in-the-breeze-1188-large.mp4'
+    };
+
+    function loadSample(type) {
+      const url = sampleUrls[type] || sampleUrls.waves;
+      videoElement.src = url;
+      videoElement.load();
+      controlsBox.classList.add('active');
+      dropArea.querySelector('.drop-main-text').textContent = 'Demo: ' + type.toUpperCase() + ' Video Loaded';
+      dropArea.querySelector('.drop-sub-text').textContent = 'Ready to forge into Live Photo asset';
+    }
+
     function handleFile(file) {
       currentVideoBlob = file;
       const url = URL.createObjectURL(file);
