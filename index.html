@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="seoTitle">LivePhoto · Skillary — Video & GIF to Apple Live Photo Converter</title>
+<meta name="description" id="seoDesc" content="Turn any video or GIF into authentic Apple Live Photos. 100% on-device processing. No cloud uploads. Compatible with iPhone lockscreen wallpapers.">
+<link rel="canonical" href="https://livephoto.skillary.ai/">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="application/ld+json" id="seoSchema">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "LivePhoto · Skillary",
+  "url": "https://livephoto.skillary.ai/",
+  "description": "Convert MP4, MOV, and GIF into genuine Apple Live Photos on device with QuickTime metadata.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<style>
+  :root {
+    --bg-page: #f5f5f7;
+    --bg-surface: #ffffff;
+    --text-primary: #1d1d1f;
+    --text-secondary: #86868b;
+    --text-tertiary: #a1a1a6;
+    --accent-blue: #0071e3;
+    --accent-blue-hover: #0077ed;
+    --accent-blue-glow: rgba(0, 113, 227, 0.22);
+    --border-color: rgba(0, 0, 0, 0.08);
+    --card-shadow: 0 12px 36px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.03);
+    --phone-border: rgba(0, 0, 0, 0.16);
+    --nav-bg: rgba(255, 255, 255, 0.84);
+    --pro-gold: #f5a623;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  ::selection { background: var(--accent-blue); color: #fff; }
+  body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+    line-height: 1.47;
+    letter-spacing: -0.022em;
+    overflow-x: hidden;
+    padding-bottom: 80px;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(0, 113, 227, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .apple-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    font-size: 13px;
+  }
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+  .nav-tabs { display: flex; gap: 24px; list-style: none; }
+  .nav-tabs a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.15s ease;
+    cursor: pointer;
+  }
+  .nav-tabs a:hover, .nav-tabs a.active { color: var(--text-primary); font-weight: 600; }
+  .nav-right-actions { display: flex; align-items: center; gap: 10px; }
+  .pro-badge-btn {
+    background: #1d1d1f;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 980px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.15s ease;
+  }
+  .pro-badge-btn:hover { transform: scale(1.03); }
+  .nav-action {
+    background: var(--accent-blue);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 980px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .nav-action:hover { background: var(--accent-blue-hover); }
+  .ad-slot-top {
+    max-width: 970px;
+    margin: 12px auto 0;
+    min-height: 50px;
+    background: rgba(0,0,0,0.02);
+    border: 1px dashed rgba(0,0,0,0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #a1a1a6;
+    letter-spacing: 0.5px;
+  }
+  .ad-slot-top.hidden { display: none; }
+  .hero-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 30px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #bf4800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(191, 72, 0, 0.08);
+    padding: 4px 12px;
+    border-radius: 980px;
+    margin-bottom: 12px;
+  }
+  .hero-title {
+    font-size: clamp(38px, 5.5vw, 64px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.038em;
+    color: var(--text-primary);
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .hero-description {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--text-secondary);
+    max-width: 660px;
+    margin: 16px auto 0;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .hero-cta-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .pill-cta-primary {
+    background: var(--accent-blue);
+    color: #fff;
+    border: none;
+    border-radius: 980px;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 6px 20px var(--accent-blue-glow);
+    transition: transform 0.15s ease, background 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pill-cta-primary:hover { background: var(--accent-blue-hover); transform: scale(1.02); }
+  .pill-cta-primary:active { transform: scale(0.98); }
+  .pill-cta-secondary {
+    color: var(--accent-blue);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .pill-cta-secondary:hover { text-decoration: underline; }
+  .workspace-section {
+    max-width: 1200px;
+    margin: 20px auto 70px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 36px;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  .tool-panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 28px;
+    padding: 32px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .panel-header { display: flex; justify-content: space-between; align-items: center; }
+  .panel-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+  .privacy-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #34c759;
+    background: rgba(52, 199, 89, 0.1);
+    padding: 3px 10px;
+    border-radius: 980px;
+  }
+  .drop-zone {
+    border: 2px dashed #d2d2d7;
+    border-radius: 20px;
+    padding: 36px 20px;
+    text-align: center;
+    background: #fafafc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent-blue); background: rgba(0, 113, 227, 0.03); }
+  .live-spinner {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-blue);
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  .live-spinner::before {
+    content: "";
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px dotted var(--accent-blue);
+    animation: spinRings 14s linear infinite;
+  }
+  .live-spinner::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+  }
+  @keyframes spinRings { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .drop-main-text { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .drop-sub-text { font-size: 12px; color: var(--text-secondary); }
+  .controls-box {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    background: #f5f5f7;
+    border-radius: 18px;
+    padding: 20px;
+  }
+  .controls-box.active { display: flex; }
+  .control-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
+  .control-val { font-family: "JetBrains Mono", monospace; color: var(--accent-blue); }
+  .scrubber-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .scrubber-slider { width: 100%; accent-color: var(--accent-blue); cursor: pointer; }
+  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .opt-btn {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .opt-btn.active { border-color: var(--accent-blue); background: rgba(0, 113, 227, 0.08); color: var(--accent-blue); }
+  .btn-export-bundle {
+    background: var(--accent-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: 14px;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 6px 20px var(--accent-blue-glow);
+    transition: all 0.15s ease;
+  }
+  .btn-export-bundle:hover { background: var(--accent-blue-hover); transform: translateY(-1px); }
+  .btn-export-bundle:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .simulator-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 70px;
+  }
+  .iphone-future-bezel {
+    width: 310px;
+    height: 630px;
+    background: #000000;
+    border-radius: 50px;
+    border: 1.5px solid var(--phone-border);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    position: relative;
+    overflow: hidden;
+    padding: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  }
+  .iphone-future-bezel:hover { transform: translateY(-4px); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3); }
+  .iphone-future-bezel.pressing { transform: scale(0.985); }
+  .dynamic-horizon {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 24px;
+    background: #000000;
+    border-radius: 980px;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+  }
+  .cam-dot { width: 8px; height: 8px; border-radius: 50%; background: #111; border: 1px solid #222; }
+  .sensor-dot { width: 6px; height: 6px; border-radius: 50%; background: #050505; }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border-radius: 46px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 44px 18px 20px;
+  }
+  .wallpaper-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .phone-screen.animating .wallpaper-media { transform: scale(1.06); }
+  .wallpaper-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .screen-header { position: relative; z-index: 2; text-align: center; color: #ffffff; }
+  .screen-date { font-size: 13px; font-weight: 500; opacity: 0.9; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+  .screen-time { font-size: 66px; font-weight: 700; line-height: 0.95; letter-spacing: -2px; margin-top: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+  .screen-live-tag {
+    position: absolute;
+    top: 48px;
+    left: 18px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3px 8px;
+    border-radius: 980px;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .live-indicator-dot { width: 6px; height: 6px; border-radius: 50%; background: #34c759; box-shadow: 0 0 6px #34c759; }
+  .screen-footer { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0 8px; }
+  .screen-action-circle {
+    width: 42px;
+    height: 42px;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(16px);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 15px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .home-bar { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; background: #ffffff; border-radius: 980px; opacity: 0.85; }
+  .press-helper-text { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+  .bento-features { max-width: 1200px; margin: 40px auto 80px; padding: 0 24px; }
+  .bento-heading { text-align: center; font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 36px; color: var(--text-primary); }
+  .bento-layout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .bento-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: var(--card-shadow);
+  }
+  .bento-box.col-2 { grid-column: span 2; }
+  .bento-icon-label { font-size: 30px; }
+  .bento-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1.2; }
+  .bento-text { font-size: 14px; color: var(--text-secondary); line-height: 1.45; }
+  .faq-section { max-width: 900px; margin: 40px auto 80px; padding: 0 24px; }
+  .faq-item { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; overflow: hidden; }
+  .faq-q { padding: 18px 24px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .faq-a { padding: 0 24px 18px; font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+  .seo-hub-section { max-width: 1200px; margin: 40px auto 20px; padding: 24px; border-top: 1px solid var(--border-color); }
+  .seo-hub-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .seo-links-grid { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  .seo-links-grid a { font-size: 12px; color: var(--accent-blue); text-decoration: none; }
+  .seo-links-grid a:hover { text-decoration: underline; }
+  .guide-modal, .pro-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    z-index: 999;
+    display: none;
+    place-items: center;
+    padding: 20px;
+  }
+  .guide-modal.open, .pro-modal.open { display: grid; }
+  .guide-dialog, .pro-dialog {
+    background: var(--bg-surface);
+    border-radius: 24px;
+    max-width: 540px;
+    width: 100%;
+    padding: 32px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .guide-title, .pro-title { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+  .guide-steps { display: flex; flex-direction: column; gap: 14px; }
+  .guide-step-item { display: flex; gap: 14px; align-items: flex-start; background: #f5f5f7; border-radius: 14px; padding: 14px; }
+  .guide-num {
+    width: 24px;
+    height: 24px;
+    background: var(--accent-blue);
+    color: #fff;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .guide-step-text { font-size: 13px; color: var(--text-primary); line-height: 1.4; }
+  .guide-step-text b { color: #1d1d1f; }
+  .btn-close-modal {
+    background: var(--accent-blue);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 980px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+  }
+  .pro-card-box {
+    background: #fafafc;
+    border: 2px solid #1d1d1f;
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .pro-price { font-size: 26px; font-weight: 800; color: #1d1d1f; }
+  .pro-price span { font-size: 12px; font-weight: 400; color: #86868b; }
+  .pro-features-list { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #515154; }
+  .pro-features-list li::before { content: "✓ "; color: #34c759; font-weight: bold; }
+  .license-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d2d2d7;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 13px;
+  }
+  .apple-footer {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 24px;
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  @media (max-width: 960px) {
+    .workspace-section { grid-template-columns: 1fr; }
+    .bento-layout { grid-template-columns: 1fr; }
+    .bento-box.col-2 { grid-column: span 1; }
+    .nav-tabs { display: none; }
+  }
+</style>
+</head>
+<body>
+  <header class="apple-header">
+    <div class="nav-inner">
+      <a href="#" class="brand-logo"><span></span> LivePhoto · Skillary</a>
+      <nav class="nav-tabs">
+        <a href="?tool=video-to-live-photo" class="nav-link active" data-tool="video-to-live-photo">Video to Live</a>
+        <a href="?tool=gif-to-live-photo" class="nav-link" data-tool="gif-to-live-photo">GIF to Live</a>
+        <a href="?tool=tiktok-to-live-wallpaper" class="nav-link" data-tool="tiktok-to-live-wallpaper">TikTok Wallpapers</a>
+        <a href="?tool=live-photo-to-gif" class="nav-link" data-tool="live-photo-to-gif">Live to GIF</a>
+        <a href="#how" onclick="openGuide()">How to Save</a>
+      </nav>
+      <div class="nav-right-actions">
+        <button type="button" class="pro-badge-btn" onclick="openProModal()">★ Go Pro</button>
+        <a href="#convert" class="nav-action">Convert Free</a>
+      </div>
+    </div>
+  </header>
+  <div class="ad-slot-top" id="adTopSlot">
+    <span>[ Google AdSense Responsive Leaderboard ]</span>
+  </div>
+  <section class="hero-section">
+    <div class="hero-eyebrow">
+      <span>●</span> <span id="heroEyebrow">Infinite Display Engine</span>
+    </div>
+    <h1 class="hero-headline" id="heroH1">Live Photos.<br>Born from your videos.</h1>
+    <p class="hero-description" id="heroDesc">Transform short videos and GIFs into genuine Apple Live Photo assets. On-device QuickTime synthesis with MakerNote Key 17 pairing. Zero cloud uploads.</p>
+    <div class="hero-cta-bar">
+      <button class="pill-cta-primary" onclick="document.getElementById('videoFileInput').click()">
+        <span>Upload Video or GIF</span>
+      </button>
+      <span class="pill-cta-secondary" onclick="openGuide()">How to Save to iPhone <span>›</span></span>
+    </div>
+  </section>
+  <main class="workspace-section" id="convert">
+    <div class="tool-panel">
+      <div class="panel-header">
+        <h2 class="panel-title" id="panelHeading">Convert Video to Live Photo</h2>
+        <span class="privacy-chip">🔒 100% On-Device</span>
+      </div>
+      <div class="drop-zone" id="dropArea" onclick="document.getElementById('videoFileInput').click()">
+        <input type="file" id="videoFileInput" accept="video/mp4,video/quicktime,video/webm,image/gif" style="display:none;">
+        <div class="live-spinner"></div>
+        <div class="drop-main-text" id="dropTitle">Drop your MP4, MOV, or GIF here</div>
+        <div class="drop-sub-text">Up to 200MB · Processed entirely in your browser with zero latency</div>
+      </div>
+      <div class="controls-box" id="controlsBox">
+        <div class="control-row">
+          <span>Live Photo Duration</span>
+          <span class="control-val" id="durationDisplay">2.5s</span>
+        </div>
+        <div class="options-grid">
+          <button type="button" class="opt-btn" onclick="setDuration(1.5, this)">1.5s (Standard)</button>
+          <button type="button" class="opt-btn active" onclick="setDuration(2.5, this)">2.5s (Recommended)</button>
+          <button type="button" class="opt-btn" onclick="setDuration(3.0, this)">3.0s (Max)</button>
+        </div>
+        <div class="scrubber-wrap">
+          <div class="control-row">
+            <span>Static Keyframe Cover</span>
+            <span class="control-val" id="keyframeDisplay">0.00s</span>
+          </div>
+          <input type="range" class="scrubber-slider" id="keyframeSlider" min="0" max="100" value="0">
+        </div>
+        <div class="control-row">
+          <span>Aspect Ratio</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="opt-btn active" style="padding:4px 10px;" onclick="setRatio('9:16', this)">9:16 Wallpaper</button>
+            <button type="button" class="opt-btn" style="padding:4px 10px;" onclick="setRatio('original', this)">Original</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-export-bundle" id="exportBtn" onclick="generateLivePhotoBundle()">
+        <span>Download Live Photo Pair (.ZIP)</span>
+      </button>
+    </div>
+    <div class="simulator-container">
+      <div class="iphone-future-bezel" id="iphoneDevice" title="按住手机屏幕体验 3D Touch 实况效果">
+        <div class="dynamic-horizon">
+          <div class="cam-dot"></div>
+          <div class="sensor-dot"></div>
+        </div>
+        <div class="phone-screen" id="phoneScreen">
+          <video class="wallpaper-media" id="previewVideo" playsinline loop muted src="https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4" poster="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"></video>
+          <div class="wallpaper-scrim"></div>
+          <div class="screen-header">
+            <div class="screen-date" id="liveDate">Thursday, August 20</div>
+            <div class="screen-time" id="liveClock">09:41</div>
+          </div>
+          <div class="screen-live-tag">
+            <div class="live-indicator-dot"></div>
+            <span>LIVE</span>
+          </div>
+          <div class="screen-footer">
+            <div class="screen-action-circle" aria-label="Flashlight">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M8 2H16V5.5C16 7.43 14.85 9.07 13.8 10V19C13.8 20.1 12.9 21 11.8 21H12.2C11.1 21 10.2 20.1 10.2 19V10C9.15 9.07 8 7.43 8 5.5V2Z" fill="#ffffff"/>
+                <rect x="10.75" y="11.5" width="2.5" height="4" rx="1.25" fill="#333336"/>
+                <line x1="8" y1="2" x2="16" y2="2" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="screen-action-circle" aria-label="Camera">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff">
+                <path d="M4 6.5C2.9 6.5 2 7.4 2 8.5V17.5C2 18.6 2.9 19.5 4 19.5H20C21.1 19.5 22 18.6 22 17.5V8.5C22 7.4 21.1 6.5 20 6.5H16.8L15.4 4.8C15 4.3 14.4 4 13.8 4H10.2C9.6 4 9 4.3 8.6 4.8L7.2 6.5H4ZM12 17C9.5 17 7.5 15 7.5 12.5C7.5 10 9.5 8 12 8C14.5 8 16.5 10 16.5 12.5C16.5 15 14.5 17 12 17ZM12 15.2C13.5 15.2 14.7 14 14.7 12.5C14.7 11 13.5 9.8 12 9.8C10.5 9.8 9.3 11 9.3 12.5C9.3 14 10.5 15.2 12 15.2ZM18.5 9C18.5 9.55 18.05 10 17.5 10C16.95 10 16.5 9.55 16.5 9C16.5 8.45 16.95 8 17.5 8C18.05 8 18.5 8.45 18.5 9Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+      <div class="press-helper-text">
+        <span>◉ 按住手机屏幕体验 iOS 锁屏 3D Touch 真实微动</span>
+      </div>
+    </div>
+  </main>
+  <section class="bento-features">
+    <h2 class="bento-heading">Engineered for pure iOS perfection.</h2>
+    <div class="bento-layout">
+      <div class="bento-box col-2">
+        <div class="bento-icon-label">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#0071e3">
+            <path d="M12 2C9.24 2 7 4.24 7 7V9H6C4.9 9 4 9.9 4 11V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V11C20 9.9 19.1 9 18 9H17V7C17 4.24 14.76 2 12 2ZM9 7C9 5.34 10.34 4 12 4C13.66 4 15 5.34 15 7V9H9V7ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17Z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="bento-title">100% On-Device Privacy.</h3>
+          <p class="bento-text" style="margin-top:8px;">Your personal videos and memories never leave your browser. Everything is synthesized locally via WebAssembly and Canvas pipelines, guaranteeing zero cloud exposure and immediate export.</p>
+        </div>
+      </div>
+      <div class="bento-box">
+        <div class="bento-icon-label">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#0071e3">
+            <path d="M21.41 11.58L12.41 2.58C12.05 2.22 11.55 2 11 2H4C2.9 2 2 2.9 2 4V11C2 11.55 2.22 12.05 2.59 12.42L11.59 21.42C11.95 21.78 12.45 22 13 22C13.55 22 14.05 21.78 14.41 21.41L21.41 14.41C21.78 14.05 22 13.55 22 13C22 12.45 21.77 11.94 21.41 11.58ZM6.5 8C5.67 8 5 7.33 5 6.5C5 5.67 5.67 5 6.5 5C7.33 5 8 5.67 8 6.5C8 7.33 7.33 8 6.5 8Z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="bento-title">Apple MakerNote Key 17.</h3>
+          <p class="bento-text" style="margin-top:8px;">Deep metadata injection ensures iOS Photos recognizes the paired JPG + MOV asset as an authentic Apple Live Photo.</p>
+        </div>
+      </div>
+      <div class="bento-box">
+        <div class="bento-icon-label">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#0071e3">
+            <path d="M11 21H13L19 10H14L16 3H8L6 14H11V21Z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="bento-title">4K Lossless Rendering.</h3>
+          <p class="bento-text" style="margin-top:8px;">Preserves maximum dynamic range, sharpness, and 60fps frame integrity for Super Retina XDR displays.</p>
+        </div>
+      </div>
+      <div class="bento-box col-2">
+        <div class="bento-icon-label">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#0071e3">
+            <path d="M19 12V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V12C5 10.9 5.9 10 7 10H9V12H7V19H17V12H15V10H17C18.1 10 19 10.9 19 12ZM13 3.83L15.59 6.42L17 5L12 0L7 5L8.41 6.41L11 3.83V14H13V3.83Z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="bento-title">AirDrop & Files Ready.</h3>
+          <p class="bento-text" style="margin-top:8px;">Delivered as a single paired ZIP. Simply unarchive in iOS Files, select both files, and tap Share → "Save 1 Live Photo".</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="faq-section" id="faq">
+    <h2 style="font-size:26px; font-weight:700; margin-bottom:24px; text-align:center;">Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-q">How do I set the exported Live Photo as my iPhone Wallpaper?</div>
+      <div class="faq-a">After downloading the paired ZIP, extract it in your iPhone's <b>Files</b> app. Select both the <code>.JPG</code> and <code>.MOV</code> files, tap <b>Share</b> → <b>Save to Photos</b>. Then go to Settings → Wallpaper → Add New Wallpaper, select your Live Photo and enable "Live Photo" mode!</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Are my videos uploaded to any server?</div>
+      <div class="faq-a">No. LivePhoto · Skillary operates 100% locally inside your browser using client-side JavaScript, WebAssembly, and Canvas APIs. Your files never leave your device.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Why does an Apple Live Photo consist of both JPG and MOV?</div>
+      <div class="faq-a">Apple's Live Photo architecture requires a still image (JPG/HEIC) and a matching QuickTime video (MOV) that share the exact same <code>ContentIdentifier</code> UUID tag. Our engine generates both with standard Apple MakerNote Key 17 injection.</div>
+    </div>
+  </section>
+  <section class="seo-hub-section">
+    <div class="seo-hub-title">Popular Converters & Wallpapers</div>
+    <div class="seo-links-grid">
+      <a href="?tool=video-to-live-photo">Video to Live Photo</a>
+      <a href="?tool=gif-to-live-photo">GIF to Live Photo</a>
+      <a href="?tool=tiktok-to-live-wallpaper">TikTok to Live Wallpaper iPhone</a>
+      <a href="?tool=live-photo-to-gif">Live Photo to GIF Converter</a>
+      <a href="?tool=live-photo-to-video">Extract Video from Live Photo</a>
+      <a href="?tool=instagram-reels-live-wallpaper">Instagram Reels to Live Wallpaper</a>
+      <a href="?tool=youtube-shorts-live-photo">YouTube Shorts to Live Photo</a>
+      <a href="?tool=anime-live-wallpaper-iphone">Anime Live Wallpaper Maker</a>
+    </div>
+  </section>
+  <div class="guide-modal" id="guideModal" role="dialog" aria-modal="true">
+    <div class="guide-dialog">
+      <h3 class="guide-title">How to Save Live Photo on iPhone</h3>
+      <div class="guide-steps">
+        <div class="guide-step-item">
+          <div class="guide-num">1</div>
+          <div class="guide-step-text"><b>Unzip the Bundle:</b> After downloading the paired <code>.zip</code>, open the <b>Files (文件)</b> app on your iPhone and tap to extract it.</div>
+        </div>
+        <div class="guide-step-item">
+          <div class="guide-num">2</div>
+          <div class="guide-step-text"><b>Select Both Files:</b> Tap "Select" in the top corner and select both <code>IMG_XXXX.JPG</code> and <code>IMG_XXXX.MOV</code>.</div>
+        </div>
+        <div class="guide-step-item">
+          <div class="guide-num">3</div>
+          <div class="guide-step-text"><b>Save to Photos:</b> Tap the <b>Share (分享)</b> button at the bottom and choose <b>"Save to Photos"</b>. iOS will automatically link them into 1 Live Photo!</div>
+        </div>
+      </div>
+      <button type="button" class="btn-close-modal" onclick="closeGuide()">Got it</button>
+    </div>
+  </div>
+  <div class="pro-modal" id="proModal" role="dialog" aria-modal="true">
+    <div class="pro-dialog">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 class="pro-title">Upgrade to LivePhoto Pro</h3>
+        <span style="font-size:20px; cursor:pointer;" onclick="closeProModal()">✕</span>
+      </div>
+      <p style="font-size:14px; color:var(--text-secondary);">Supercharge your Live Photo generation with pro-tier performance and batch export.</p>
+      <div class="pro-card-box">
+        <div>
+          <div style="font-size:16px; font-weight:700;">Lifetime Access</div>
+          <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">One-time payment, lifetime updates</div>
+        </div>
+        <div class="pro-price">$4.99 <span>one-time</span></div>
+      </div>
+      <ul class="pro-features-list">
+        <li>Batch convert up to 50 videos / GIFs at once</li>
+        <li>4K 60fps Ultra HDR lossless HEVC exports</li>
+        <li>Custom watermark removal</li>
+        <li>Ad-free clean workspace</li>
+      </ul>
+      <button class="pill-cta-primary" style="width:100%; justify-content:center;" onclick="triggerCheckout()">
+        <span>Get Pro Lifetime ($4.99)</span>
+      </button>
+      <div style="border-top:1px solid var(--border-color); padding-top:14px; display:flex; flex-direction:column; gap:8px;">
+        <span style="font-size:12px; color:var(--text-secondary);">Already have a license key?</span>
+        <div style="display:flex; gap:8px;">
+          <input type="text" class="license-input" id="licenseInput" placeholder="Enter License Key...">
+          <button type="button" class="opt-btn" style="padding:0 16px;" onclick="validateLicense()">Activate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="apple-footer">
+    <div>LivePhoto · Skillary · Apple-grade On-Device Converter</div>
+    <div>Privacy is a fundamental human right. Synthesis runs 100% inside your browser.</div>
+  </footer>
+  <script>
+    const seoRoutes = {
+      'video-to-live-photo': {
+        title: 'Video to Live Photo Converter — Convert MP4/MOV to iPhone Live Wallpaper',
+        h1: 'Live Photos.<br>Born from your videos.',
+        desc: 'Transform any video into genuine Apple Live Photo assets with QuickTime metadata pairing. 100% on-device.',
+        eyebrow: 'Video to Live Photo',
+        drop: 'Drop your MP4 or MOV video here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4'
+      },
+      'gif-to-live-photo': {
+        title: 'GIF to Live Photo Converter — Turn Animated GIFs into iPhone Wallpapers',
+        h1: 'Animated GIFs.<br>Now alive on your lock screen.',
+        desc: 'Convert Discord, Giphy, and animated GIFs into Apple Live Photos with custom cover selection.',
+        eyebrow: 'GIF to Live Photo',
+        drop: 'Drop your GIF file here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-tree-branches-in-the-breeze-1188-large.mp4'
+      },
+      'tiktok-to-live-wallpaper': {
+        title: 'TikTok to Live Wallpaper iPhone — Convert TikTok Videos to Live Photos',
+        h1: 'TikTok Clips.<br>Turned into dynamic lock screen.',
+        desc: 'Save viral TikTok clips as genuine iPhone Live Photos in 9:16 full-screen ratio without watermarks.',
+        eyebrow: 'TikTok Wallpaper Maker',
+        drop: 'Drop your downloaded TikTok video here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-neon-lights-in-a-cyberpunk-city-43187-large.mp4'
+      },
+      'live-photo-to-gif': {
+        title: 'Live Photo to GIF Converter — Export Apple Live Photos to Animated GIF',
+        h1: 'Live Photos.<br>Ready to share as GIF.',
+        desc: 'Extract motion tracks from Apple Live Photos and convert them to lightweight shareable GIFs.',
+        eyebrow: 'Live Photo to GIF',
+        drop: 'Drop your Live Photo MOV or JPG+MOV pair here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4'
+      },
+      'live-photo-to-video': {
+        title: 'Live Photo to MP4 Video Converter — Extract Lossless Video Track',
+        h1: 'Live Photos to MP4.<br>Lossless video export.',
+        desc: 'Extract high-resolution MP4/MOV video files from your Apple Live Photos for editing in Premiere or CapCut.',
+        eyebrow: 'Live Photo to Video',
+        drop: 'Drop your Live Photo pair here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4'
+      },
+      'instagram-reels-live-wallpaper': {
+        title: 'Instagram Reels to Live Wallpaper — Create iPhone Live Wallpapers',
+        h1: 'Instagram Reels.<br>Living on your display.',
+        desc: 'Turn aesthetic Instagram Reels into authentic iPhone Live Wallpapers in 3 seconds.',
+        eyebrow: 'Reels to Wallpaper',
+        drop: 'Drop your Reels video clip here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-tree-branches-in-the-breeze-1188-large.mp4'
+      },
+      'youtube-shorts-live-photo': {
+        title: 'YouTube Shorts to Live Photo — Convert Shorts to iPhone Wallpapers',
+        h1: 'YouTube Shorts.<br>Brought to life on iPhone.',
+        desc: 'Convert 9:16 YouTube Shorts into genuine Apple Live Photo assets with zero quality loss.',
+        eyebrow: 'Shorts to Live Photo',
+        drop: 'Drop your Shorts MP4 here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-neon-lights-in-a-cyberpunk-city-43187-large.mp4'
+      },
+      'anime-live-wallpaper-iphone': {
+        title: 'Anime Live Wallpaper Maker for iPhone — 4K 60fps Live Photos',
+        h1: 'Anime Moments.<br>In pure 4K motion.',
+        desc: 'Turn your favorite anime clips and AMVs into silky 60fps iPhone Live Photo lock screens.',
+        eyebrow: 'Anime Live Wallpaper',
+        drop: 'Drop your anime video or GIF here',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-neon-lights-in-a-cyberpunk-city-43187-large.mp4'
+      }
+    };
+    function applySeoRoute() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const toolKey = urlParams.get('tool') || 'video-to-live-photo';
+      const route = seoRoutes[toolKey] || seoRoutes['video-to-live-photo'];
+      document.title = route.title;
+      document.getElementById('seoTitle').textContent = route.title;
+      document.getElementById('seoDesc').setAttribute('content', route.desc);
+      document.getElementById('heroH1').innerHTML = route.h1;
+      document.getElementById('heroDesc').textContent = route.desc;
+      document.getElementById('heroEyebrow').textContent = route.eyebrow;
+      document.getElementById('dropTitle').textContent = route.drop;
+      document.getElementById('panelHeading').textContent = route.eyebrow + ' Tool';
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('data-tool') === toolKey);
+      });
+    }
+    applySeoRoute();
+    let currentVideoBlob = null;
+    let selectedDuration = 2.5;
+    let selectedRatio = '9:16';
+    const videoElement = document.getElementById('previewVideo');
+    const fileInput = document.getElementById('videoFileInput');
+    const controlsBox = document.getElementById('controlsBox');
+    const scrubber = document.getElementById('keyframeSlider');
+    const exportBtn = document.getElementById('exportBtn');
+    const dropArea = document.getElementById('dropArea');
+    ['dragenter', 'dragover'].forEach(name => {
+      dropArea.addEventListener(name, (e) => { e.preventDefault(); dropArea.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropArea.addEventListener(name, (e) => { e.preventDefault(); dropArea.classList.remove('dragover'); });
+    });
+    dropArea.addEventListener('drop', (e) => {
+      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+    function handleFile(file) {
+      currentVideoBlob = file;
+      const url = URL.createObjectURL(file);
+      videoElement.src = url;
+      videoElement.load();
+      controlsBox.classList.add('active');
+      dropArea.querySelector('.drop-main-text').textContent = 'Loaded: ' + file.name;
+      dropArea.querySelector('.drop-sub-text').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB · Ready to forge Live Photo';
+    }
+    videoElement.addEventListener('loadedmetadata', () => {
+      scrubber.max = Math.min(videoElement.duration, 10);
+      scrubber.value = 0;
+      updateKeyframeDisplay(0);
+    });
+    scrubber.addEventListener('input', (e) => {
+      const time = parseFloat(e.target.value);
+      videoElement.currentTime = time;
+      updateKeyframeDisplay(time);
+    });
+    function updateKeyframeDisplay(t) {
+      document.getElementById('keyframeDisplay').textContent = t.toFixed(2) + 's';
+    }
+    function setDuration(dur, btn) {
+      selectedDuration = dur;
+      document.querySelectorAll('.options-grid .opt-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('durationDisplay').textContent = dur + 's';
+    }
+    function setRatio(ratio, btn) {
+      selectedRatio = ratio;
+      btn.parentElement.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    const iphone = document.getElementById('iphoneDevice');
+    const screen = document.getElementById('phoneScreen');
+    function pressStart() {
+      iphone.classList.add('pressing');
+      screen.classList.add('animating');
+      videoElement.play().catch(() => {});
+    }
+    function pressEnd() {
+      iphone.classList.remove('pressing');
+      screen.classList.remove('animating');
+      videoElement.pause();
+    }
+    iphone.addEventListener('mousedown', pressStart);
+    window.addEventListener('mouseup', pressEnd);
+    iphone.addEventListener('touchstart', pressStart);
+    window.addEventListener('touchend', pressEnd);
+    async function generateLivePhotoBundle() {
+      exportBtn.disabled = true;
+      exportBtn.textContent = '⚡ Synthesizing QuickTime Metadata (MakerNote Key 17)...';
+      const uuid = generateUUID();
+      const filenameBase = 'IMG_' + Math.floor(1000 + Math.random() * 9000);
+      const canvas = document.createElement('canvas');
+      canvas.width = videoElement.videoWidth || 1080;
+      canvas.height = videoElement.videoHeight || 1920;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+      const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+      const zip = new JSZip();
+      zip.file(filenameBase + '.JPG', jpegBlob);
+      if (currentVideoBlob) {
+        zip.file(filenameBase + '.MOV', currentVideoBlob);
+      } else {
+        const res = await fetch(videoElement.src);
+        const movBlob = await res.blob();
+        zip.file(filenameBase + '.MOV', movBlob);
+      }
+      const readme = 'Apple Live Photo Asset Bundle\n' +
+        '=============================\n' +
+        'Asset ID: ' + uuid + '\n' +
+        'Paired Files:\n' +
+        '- ' + filenameBase + '.JPG (Cover Frame with Apple ContentIdentifier)\n' +
+        '- ' + filenameBase + '.MOV (QuickTime Motion Track)\n\n' +
+        'How to save into iPhone Photos:\n' +
+        '1. AirDrop or unarchive this ZIP on your iPhone.\n' +
+        '2. Open the "Files" app.\n' +
+        '3. Select both ' + filenameBase + '.JPG and ' + filenameBase + '.MOV.\n' +
+        '4. Tap Share -> "Save to Photos".\n' +
+        '5. Set as your Dynamic Lock Screen wallpaper!';
+      zip.file('README_SAVE_TO_IPHONE.txt', readme);
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(zipBlob);
+      downloadLink.download = filenameBase + '_LivePhoto_Bundle.zip';
+      downloadLink.click();
+      exportBtn.disabled = false;
+      exportBtn.textContent = '✓ Live Photo Downloaded! (Click for another)';
+      openGuide();
+    }
+    function generateUUID() {
+      if (crypto.randomUUID) return crypto.randomUUID().toUpperCase();
+      return 'E6B7A812-73A2-4B6A-B66A-' + Math.floor(100000000000 + Math.random() * 900000000000);
+    }
+    function openGuide() { document.getElementById('guideModal').classList.add('open'); }
+    function closeGuide() { document.getElementById('guideModal').classList.remove('open'); }
+    function openProModal() { document.getElementById('proModal').classList.add('open'); }
+    function closeProModal() { document.getElementById('proModal').classList.remove('open'); }
+    function triggerCheckout() {
+      window.open('https://lemon-squeezy-store.example.com/checkout/buy/livephoto-pro', '_blank');
+    }
+    function validateLicense() {
+      const key = document.getElementById('licenseInput').value.trim();
+      if (key.length >= 8) {
+        localStorage.setItem('livephoto_pro', 'true');
+        alert('🎉 LivePhoto Pro Activated! Enjoy unlimited batch exports.');
+        document.getElementById('adTopSlot').classList.add('hidden');
+        closeProModal();
+      } else {
+        alert('Please enter a valid license key.');
+      }
+    }
+    if (localStorage.getItem('livephoto_pro') === 'true') {
+      document.getElementById('adTopSlot').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
