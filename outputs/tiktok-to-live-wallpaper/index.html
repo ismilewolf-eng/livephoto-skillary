@@ -1135,6 +1135,16 @@
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
         <div style="font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
           <span>📸 LivePhoto</span>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">
+          <a href="/privacy/" style="color: var(--text-secondary); text-decoration: none;">Privacy Policy</a>
+          <a href="/terms/" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+          <a href="/es/" style="color: var(--text-secondary); text-decoration: none;">Español</a>
+          <a href="/ja/" style="color: var(--text-secondary); text-decoration: none;">日本語</a>
+          <a href="/pt/" style="color: var(--text-secondary); text-decoration: none;">Português</a>
+          <a href="/de/" style="color: var(--text-secondary); text-decoration: none;">Deutsch</a>
+          <a href="/llms.txt" style="color: var(--accent-blue); text-decoration: none;">LLMs.txt (AI)</a>
+        </div>
+
           <span style="font-weight: normal; color: var(--text-tertiary);">· 100% On-Device Synthesis</span>
         </div>
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
@@ -1330,6 +1340,39 @@
     window.addEventListener('mouseup', pressEnd);
     iphone.addEventListener('touchstart', pressStart);
     window.addEventListener('touchend', pressEnd);
+    
+    function createXmpApp1Segment(uuid) {
+      const xmpHeader = "http://ns.adobe.com/xap/1.0/\x00";
+      const xmpPayload = '<x:xmpmeta xmlns:x="adobe:ns:meta/">' +
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">' +
+        '<rdf:Description rdf:about="" xmlns:AppleLivePhoto="http://ns.apple.com/livephoto/1.0/" ' +
+        'AppleLivePhoto:MediaGroupUUID="' + uuid + '"/>' +
+        '</rdf:RDF></x:xmpmeta>';
+      const headerBytes = new TextEncoder().encode(xmpHeader);
+      const payloadBytes = new TextEncoder().encode(xmpPayload);
+      const totalLength = 2 + headerBytes.length + payloadBytes.length;
+      const segment = new Uint8Array(2 + totalLength);
+      segment[0] = 0xFF;
+      segment[1] = 0xE1;
+      segment[2] = (totalLength >> 8) & 0xFF;
+      segment[3] = totalLength & 0xFF;
+      segment.set(headerBytes, 4);
+      segment.set(payloadBytes, 4 + headerBytes.length);
+      return segment;
+    }
+
+    function injectXmpIntoJpeg(jpegUint8Array, uuid) {
+      if (jpegUint8Array[0] !== 0xFF || jpegUint8Array[1] !== 0xD8) {
+        return jpegUint8Array;
+      }
+      const xmpSeg = createXmpApp1Segment(uuid);
+      const result = new Uint8Array(jpegUint8Array.length + xmpSeg.length);
+      result.set(jpegUint8Array.subarray(0, 2), 0);
+      result.set(xmpSeg, 2);
+      result.set(jpegUint8Array.subarray(2), 2 + xmpSeg.length);
+      return result;
+    }
+
     async function generateLivePhotoBundle() {
       exportBtn.disabled = true;
       exportBtn.textContent = '⚡ Synthesizing QuickTime Metadata (MakerNote Key 17)...';
@@ -1340,7 +1383,10 @@
       canvas.height = videoElement.videoHeight || 1920;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-      const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+      const rawJpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+      const rawBuffer = await rawJpegBlob.arrayBuffer();
+      const taggedBuffer = injectXmpIntoJpeg(new Uint8Array(rawBuffer), uuid);
+      const jpegBlob = new Blob([taggedBuffer], { type: 'image/jpeg' });
       const zip = new JSZip();
       zip.file(filenameBase + '.JPG', jpegBlob);
       if (currentVideoBlob) {
@@ -1398,5 +1444,14 @@
       document.getElementById('adTopSlot').classList.add('hidden');
     }
   </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+
 </body>
 </html>
