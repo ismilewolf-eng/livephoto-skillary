@@ -1,0 +1,42 @@
+# LivePhoto
+
+> Free, 100% on-device online tool to convert videos (MP4, MOV, WebM) and animated GIFs into authentic Apple Live Photos (.zip asset pairs) for iPhone dynamic lockscreen wallpapers and Photos library.
+
+LivePhoto (https://livephoto.skillary.ai/) enables creators and iPhone users to turn any motion clip into genuine Apple-compatible Live Photo assets. Processing runs entirely in the user's browser using HTML5 Canvas, client-side video decoding, and WebAssembly, ensuring absolute privacy with zero server uploads.
+
+## Core Capabilities
+- Video to Live Photo: Convert MP4, MOV, and WebM videos into paired JPG + MOV files compatible with iOS lockscreens.
+- GIF to Live Photo: Transform animated GIFs into Apple Live Photos with customizable static cover frame selection.
+- TikTok & Social Media to Live Wallpaper: Convert vertical 9:16 clips from TikTok, Instagram Reels, and YouTube Shorts into full-screen iPhone dynamic wallpapers.
+- Live Photo to GIF / MP4: Extract animated GIFs or high-definition video tracks from existing Live Photo bundles.
+- 3D Touch & Haptic Press Simulation: Interactive iPhone lockscreen simulator providing real-time pressure preview of motion wallpapers.
+- 100% On-Device & Private: Zero files sent to the cloud; synthesis occurs completely inside local browser memory.
+
+## Technical Specifications
+- Still Image Component: Standard JPEG image with Apple MakerNote Key 17 containing the exact com.apple.quicktime.content.identifier UUID string.
+- Motion Video Component: QuickTime MOV container with matching mdta:com.apple.quicktime.content.identifier metadata and com.apple.quicktime.still-image-time set to the chosen cover frame.
+- Pairing Mechanism: When both files share an identical UUID and are imported via the iOS Files app (Share -> "Save to Photos"), iOS Photos framework automatically links them into a single native Live Photo.
+- Supported Duration: 1.5 seconds (standard), 2.5 seconds (recommended for lockscreens), or 3.0 seconds (maximum).
+- Supported Aspect Ratios: 9:16 vertical iPhone wallpaper format or original source aspect ratio.
+
+## Step-by-Step User Instructions
+1. Navigate to https://livephoto.skillary.ai/ or a dedicated tool endpoint.
+2. Drop or upload an MP4, MOV, or GIF file (up to 200MB).
+3. Select the desired Live Photo duration and drag the scrubber slider to select the still cover frame.
+4. Click "Download Live Photo Pair (.ZIP)".
+5. On your iPhone:
+   - Open the downloaded .zip file in the Files (文件) app and tap to extract it.
+   - Tap "Select" in the top right corner, then select both the .JPG and .MOV files.
+   - Tap the Share (分享) icon in the bottom left, then choose "Save to Photos" (存储到“照片”).
+   - Open the Photos (照片) app; the item will display the native "LIVE" badge.
+   - Go to Settings -> Wallpaper -> Add New Wallpaper -> Live Photo to set it as a dynamic wallpaper.
+
+## Dedicated Tools
+- Video to Live Photo: https://livephoto.skillary.ai/video-to-live-photo/
+- GIF to Live Photo: https://livephoto.skillary.ai/gif-to-live-photo/
+- TikTok to Live Wallpaper: https://livephoto.skillary.ai/tiktok-to-live-wallpaper/
+- Live Photo to GIF: https://livephoto.skillary.ai/live-photo-to-gif/
+- Live Photo to Video: https://livephoto.skillary.ai/live-photo-to-video/
+- Instagram Reels to Wallpaper: https://livephoto.skillary.ai/instagram-reels-live-wallpaper/
+- YouTube Shorts to Live Photo: https://livephoto.skillary.ai/youtube-shorts-live-photo/
+- Anime Live Wallpaper Maker: https://livephoto.skillary.ai/anime-live-wallpaper-iphone/
