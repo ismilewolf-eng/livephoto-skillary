@@ -46,4 +46,5 @@ Allow: /
 # LLMs.txt: https://livephoto.skillary.ai/llms.txt
 # LLMs-full.txt: https://livephoto.skillary.ai/llms-full.txt
 
+# IndexNow Key: https://livephoto.skillary.ai/8c79ced6f2244c949a0a5d85c131bbe0.txt
 Sitemap: https://livephoto.skillary.ai/sitemap.xml
