@@ -1,4 +1,4 @@
-# DESIGN.md — LivePhoto.video (Apple Future iOS Edition)
+# DESIGN.md — LivePhoto (Apple-inspired edition)
 
 > 本文件是本项目视觉系统、交互哲学与代码实现的唯一事实源。
 > 选定方向：方向 4（Apple 极简设计奖 × Future iOS 超窄边框全面屏美学）。
@@ -46,7 +46,7 @@
 1. **Future iPhone 锁屏模拟器**：
    - 1.5mm 超窄无界钛边框，98.5% 屏占比。
    - Dynamic Island / Horizon 灵动胶囊。
-   - **3D Touch 按压物理模拟**：长按屏幕触发平滑缩放与 Live Photo 实况波纹动画。
+   - **按住预览**：长按屏幕播放上传或示例视频，松开暂停；不声称提供真实 3D Touch 或触觉反馈。
 2. **Apple Live Photo 同心圆旋转标志**：
    - 3 层同心圆微动指示器。
 3. **关键帧时间轴滑块 (Keyframe Scrubber)**：
@@ -61,14 +61,12 @@
 3. **品牌 focus-visible 环**：2px solid #0071E3; outline-offset: 2px。
 4. **签名交互**：iPhone 锁屏 3D Touch 呼吸按压震动反馈。
 5. **多层染色阴影栈**：结合 Apple Blue 与环境色实现双层弥散。
-6. **编辑细节**：QuickTime MakerNote Key 17 状态芯片 + 0ms 纯端侧 WebAssembly 认证标签。
+6. **编辑细节**：封面帧时间码与明确的“本地处理”状态说明。
 
 ## 6. 功能契约 (Functional Contract)
 
-- 上传视频 (MP4/MOV/WebM/GIF) 并在浏览器内即时解析。
-- 提取关键静态帧（JPEG 注入 Apple MakerNote Key 17 标识）。
-- 提取并合规封装 QuickTime MOV 视频流。
-- 打包为标准配对 ZIP 资产供用户一键 AirDrop 或存入 iOS 相册。
-- 内置 iOS 保存三步教程与逆向转换（实况提取 GIF/视频）。
-- 内置长尾 Programmatic SEO 多场景落地页与 Pro 变现插槽。
-
+- 当前支持 MP4/MOV/WebM：浏览器能播放时可选择画面并导出 JPEG 封面帧。
+- ZIP 保留原始视频的字节、格式与扩展名，包含封面 JPEG 和说明文件。
+- 示例视频仅供预览，必须上传本地视频才能导出。
+- 导出物不是原生 Apple Live Photo；在完成双文件元数据配对和 iPhone 实机验证前，页面与搜索摘要必须如实说明这一限制。
+- 未实现的 GIF、逆向转换、批量导出和收费入口不作为可用功能展示；相关专题页暂不收录。

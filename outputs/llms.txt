@@ -1,43 +1,19 @@
 # LivePhoto
 
-> Free, 100% on-device online tool to convert videos (MP4, MOV, WebM) and animated GIFs into authentic Apple Live Photos (.zip asset pairs) for iPhone dynamic lockscreen wallpapers and Photos library.
+> Free on-device browser tool to convert videos (MP4, MOV, WebM) into genuine Apple Live Photo asset pairs with matching ContentIdentifier metadata.
 
-LivePhoto (https://livephoto.skillary.ai/) enables creators and iPhone users to turn any motion clip into genuine Apple-compatible Live Photo assets. Processing runs entirely in the user's browser using HTML5 Canvas, client-side video decoding, and WebAssembly, ensuring absolute privacy with zero server uploads.
+## Available now
+- Preview and scrub any browser-playable MP4, MOV, or WebM video under 100 MB.
+- Choose exact still cover frame with interactive scrubber.
+- Inject AppleLivePhoto:MediaGroupUUID into JPEG (APP1 XMP segment).
+- Inject com.apple.quicktime.content.identifier into QuickTime MOV moov/udta/meta box.
+- Download paired IMG_LIVE.JPG and IMG_LIVE.MOV in an iOS-ready ZIP bundle.
+- 100% on-device client-side synthesis with zero cloud uploads.
 
-## Core Capabilities
-- Video to Live Photo: Convert MP4, MOV, and WebM videos into paired JPG + MOV files compatible with iOS lockscreens.
-- MOV to Live Photo: Native QuickTime MOV container and ProRes frame ingestion.
-- WebM to Live Photo: Convert browser WebM animations from Discord and Reddit into Live Photos.
-- GIF to Live Photo: Transform animated GIFs into Apple Live Photos with customizable static cover frame selection.
-- TikTok & Social Media to Live Wallpaper: Convert vertical 9:16 clips from TikTok, Instagram Reels, and YouTube Shorts into full-screen iPhone dynamic wallpapers.
-- 4K Ultra HD & 60fps Support: Preserve full resolution and smoothness for Super Retina XDR displays.
-- Loop Video to Live Photo: Create seamless infinite looping wallpapers.
-- Extract Frames: Extract full-resolution still photos from existing Live Photos.
-- Live Photo to GIF / MP4: Extract animated GIFs or high-definition video tracks from existing Live Photo bundles.
-- 3D Touch & Haptic Press Simulation: Interactive iPhone lockscreen simulator providing real-time pressure preview of motion wallpapers.
-- 100% On-Device & Private: Zero files sent to the cloud; synthesis occurs completely inside local browser memory.
-
-## Dedicated Tools Directory
+## Pages
+- Home: https://livephoto.skillary.ai/
 - Video to Live Photo: https://livephoto.skillary.ai/video-to-live-photo/
-- QuickTime MOV to Live Photo: https://livephoto.skillary.ai/mov-to-live-photo/
+- MOV to Live Photo: https://livephoto.skillary.ai/mov-to-live-photo/
 - WebM to Live Photo: https://livephoto.skillary.ai/webm-to-live-photo/
-- GIF to Live Photo: https://livephoto.skillary.ai/gif-to-live-photo/
-- Live Photo to GIF: https://livephoto.skillary.ai/live-photo-to-gif/
-- Live Photo to Video: https://livephoto.skillary.ai/live-photo-to-video/
-- Extract Frames from Live Photo: https://livephoto.skillary.ai/extract-frames-from-live-photo/
-- iPhone Live Wallpaper Maker: https://livephoto.skillary.ai/live-wallpaper-maker-iphone/
-- 4K Live Wallpaper Maker: https://livephoto.skillary.ai/4k-live-wallpaper-iphone/
-- TikTok to Live Wallpaper: https://livephoto.skillary.ai/tiktok-to-live-wallpaper/
-- Instagram Reels to Wallpaper: https://livephoto.skillary.ai/instagram-reels-live-wallpaper/
-- YouTube Shorts to Live Photo: https://livephoto.skillary.ai/youtube-shorts-live-photo/
-- Anime Live Wallpaper Maker: https://livephoto.skillary.ai/anime-live-wallpaper-iphone/
-- Loop Video to Live Photo: https://livephoto.skillary.ai/loop-video-to-live-photo/
-
-## International Editions
-- Español: https://livephoto.skillary.ai/es/
-- 日本語: https://livephoto.skillary.ai/ja/
-- Français: https://livephoto.skillary.ai/fr/
-- Deutsch: https://livephoto.skillary.ai/de/
-- Português: https://livephoto.skillary.ai/pt/
-- 한국어: https://livephoto.skillary.ai/ko/
-- 繁體中文: https://livephoto.skillary.ai/zh/
+- Privacy: https://livephoto.skillary.ai/privacy/
+- Terms: https://livephoto.skillary.ai/terms/
